@@ -12,14 +12,18 @@
 
 ## 2. 195.2.74.207 — v3137506
 
-Сервер сайта и страницы-прокладки. **Claude доступа НЕ имеет** — все правки
-через Тимофея вручную.
+Сервер сайта и страницы-прокладки. **Claude имеет root-доступ с 20.08.2026** —
+через ропбот-сервер: `ssh -i ~/.ssh/relay root@195.2.74.207`.
+hostname: `v3137506.hosted-by-vdsina.ru`.
 
 - `/var/www/mes.autosender.ru/index.html` — страница подписки
 - nginx + certbot, сертификат Let's Encrypt до 15.11.2026
 - DNS: `mes.autosender.ru` → 195.2.74.207
 
-**Как дать Claude доступ** (по желанию, отзывается удалением строки):
+**Как отозвать доступ:** удалить строку с ключом `root@danilchenov.fvds.ru`
+из `/root/.ssh/authorized_keys` на 195.2.74.207.
+
+Выданный ключ:
 ```
 echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICJdAl2AiNbjhqL7l4JJ4yMGpDAiwp025/u8RhW4jaU root@danilchenov.fvds.ru' >> ~/.ssh/authorized_keys
 ```
