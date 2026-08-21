@@ -4,6 +4,8 @@
 разговора с успешными и поведение клиента в одну цифру, записать её в CRM и
 пометить заявки выше порога значком, чтобы менеджеры видели живых лидов.
 
+Отчёт: https://claude.ai/code/artifact/75ac480b-46f4-4873-84f6-3fb32eb54332
+
 Код: `/opt/ropbot/app/composite.py`, `app/card.py`, изменённые `app/marker.py`
 и `app/extractor.py`. Подбор весов и проверки — `/opt/ropbot/lab/composite_*.py`,
 `lab/card_weight2.py`, `lab/v2b_cv.py`.
