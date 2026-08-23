@@ -18,13 +18,25 @@
 ### Крон (root, сервер 5.35.99.93)
 
 ```
-*/5 * * * *  metrika.py enrich --days 2 --limit 100 && scorer.py score
-0 22 * * *   metrika.py enrich --days 440 --skip 45 --limit 3500
-10 1 * * *   scorer.py train --model all
-30 1 * * *   digest.py
+*/5  * * * *   metrika.py enrich --days 45 --limit 100 && scorer.py score
+*/5  * * * *   presence.py
+*/10 * * * *   composite.py --days 90 --limit 300 && marker.py --limit 300
+*/15 * * * *   web/build.sh (flock) — пересборка панелей
+*/30 * * * *   metrika.py match --limit 400
+7    * * * *   db/asr_priority.sql
+0 3  * * 1-5   bestworst.py — Светлане лучший и худший разговор (10:00 Влд)
+0 3  * * *     db/backup.sh
+0 6  * * *     /opt/knowledge/audit.sh
+0 22 * * *     metrika.py enrich --days 440 --skip 45 --limit 3500
+10 1 * * *     scorer.py train --model all
+30 23 * * 0    profile.py — портрет менеджера, воскресной ночью
+40 3 1 * *     lab/prices_models.py — актуальные цены и модели, раз в месяц
 ```
 
-Логи: `/var/log/ropbot/{pipeline,metrika,scorer,digest}.log`
+Крон на хосте идёт по **MSK**; 03:00 MSK = 10:00 Владивосток.
+`digest.py` из крона снят 20.08 — вывод скоринга ушёл в CRM, не в телеграм.
+
+Логи: `/var/log/ropbot/{pipeline,metrika,scorer,marker,presence,dash,control,profile,bestworst}.log`
 
 ### Схема БД
 
