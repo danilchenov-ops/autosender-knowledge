@@ -12,9 +12,9 @@
 | Данные | Postgres «ropbot» на danilchenov (5.35.99.93), схема `pulse` |
 | Сборщик страницы + runbook | `pulse.assets` (build_page.py, aggregates.json gzip+base64, runbook.md — plain text) |
 | Артефакт-дашборд | https://claude.ai/code/artifact/ee42a2ba-8240-457f-a761-e2ed9e7ee003 |
-| **Страница в панели РОПа** | https://rop.autosender.ru:8443/d/7f4d4e1805673d4605e42a052e13cd41/puls.html |
+| **Вкладка «Пульс» в панели РОПа** | https://rop.autosender.ru:8443/d/7f4d4e1805673d4605e42a052e13cd41/puls.html |
 | Файл страницы | `/opt/ropbot/web/d/7f4d4e1805673d4605e42a052e13cd41/puls.html` (рядом с kachestvo.html) |
-| Рабочий каталог сборки | `/root/pulse/` на сервере ропа (build_page.py, kpi.csv, aggregates.json, pulse.html) |
+| Рабочий каталог сборки | `/root/pulse/` на сервере ропа (build_page.py, kpi.csv, aggregates.json, pulse.html, publish.sh) |
 
 **Решение Тимофея 26.08:** страница живёт в существующей панели РОПа на
 rop.autosender.ru:8443 (токен `7f4d…cd41`, kind=rop) — там, где kachestvo.html.
@@ -22,10 +22,13 @@ rop.autosender.ru:8443 (токен `7f4d…cd41`, kind=rop) — там, где k
 секретная ссылка /c266426ba3ac3db3/) — **отменены**, ничего там не обновлять,
 DNS не трогать. Файлы на 92.63.100.125 можно снести при случае.
 
-Важно: build.sh пересобирает панели в этом каталоге каждые 15 минут, но puls.html
-не трогает (переносит только файлы, которые породил dash.py) — статика живёт.
-pulse.html из build_page.py — фрагмент под артефакт (без doctype/head/body); при
-выкладке на сервер нужна обёртка — команда в runbook.md, раздел 6а.
+26.08 страница встроена вкладкой «Пульс» в панель РОПа: ROP_TABS в
+/opt/ropbot/web/dash.py (бэкап dash.py.bak-puls); сам «Пульс» dash.py не
+собирает (в PAGE_SET его нет) — это статика, которую кладёт
+`bash /root/pulse/publish.sh` (обёртка doctype/meta + таб-бар поверх
+pulse.html-фрагмента). build.sh пересобирает панели каждые 15 минут, но
+puls.html не трогает. Сбор «Пульса» описан на вкладке «Замеры» (список
+ZAMERY в dash.py) — при изменении состава сбора обновлять и его.
 
 ## Схема `pulse` (база ropbot, контейнер ropbot-postgres-1, psql -U rop -d rop)
 
@@ -70,7 +73,9 @@ Scheduled task, cron `30 23 * * *` UTC (09:30 Владивосток),
 
 ## Осталось
 
-- **Scheduled task не создана** — в исходном чате застряло разрешение
-  create_trigger. Создать заново с параметрами выше.
+- **Scheduled task всё ещё не создана** — застрявшее правило разрешения
+  create_trigger («одобрено с правками») блокирует вызов и в новом чате.
+  Тимофею нужно снять/отклонить старое правило, после этого создать задачу
+  с параметрами выше (промпт готов, лежит в чате от 26.08).
 - Прибраться на 92.63.100.125: /var/www/pulse и /opt/orchestrator/pulse_upload
   больше не нужны (низкий приоритет).
