@@ -10,28 +10,36 @@
 | Что | Где |
 |---|---|
 | Данные | Postgres «ropbot» на danilchenov (5.35.99.93), схема `pulse` |
-| Сборщик страницы + runbook | `pulse.assets` (build_page.py, aggregates.json gzip+base64, runbook.md) |
+| Сборщик страницы + runbook | `pulse.assets` (build_page.py, aggregates.json gzip+base64, runbook.md — plain text) |
 | Артефакт-дашборд | https://claude.ai/code/artifact/ee42a2ba-8240-457f-a761-e2ed9e7ee003 |
-| Копия на своём домене | сервер оркестрации 92.63.100.125, `/var/www/pulse/index.html` |
-| Секретная ссылка | https://rop.autosender.ru/c266426ba3ac3db3/ (корень — 404, noindex) |
-| Инструкция деплоя копии | `/opt/orchestrator/pulse_upload/README-deploy.md` (на 92.63.100.125) |
+| **Страница в панели РОПа** | https://rop.autosender.ru:8443/d/7f4d4e1805673d4605e42a052e13cd41/puls.html |
+| Файл страницы | `/opt/ropbot/web/d/7f4d4e1805673d4605e42a052e13cd41/puls.html` (рядом с kachestvo.html) |
+| Рабочий каталог сборки | `/root/pulse/` на сервере ропа (build_page.py, kpi.csv, aggregates.json, pulse.html) |
 
-## Схема `pulse` (база ropbot)
+**Решение Тимофея 26.08:** страница живёт в существующей панели РОПа на
+rop.autosender.ru:8443 (токен `7f4d…cd41`, kind=rop) — там, где kachestvo.html.
+Смена A-записи и копия на сервере оркестрации 92.63.100.125 (/var/www/pulse,
+секретная ссылка /c266426ba3ac3db3/) — **отменены**, ничего там не обновлять,
+DNS не трогать. Файлы на 92.63.100.125 можно снести при случае.
 
-- **`pulse.daily_kpi`** — 90 дней истории (28.05–25.08), все дни заполнены:
+Важно: build.sh пересобирает панели в этом каталоге каждые 15 минут, но puls.html
+не трогает (переносит только файлы, которые породил dash.py) — статика живёт.
+pulse.html из build_page.py — фрагмент под артефакт (без doctype/head/body); при
+выкладке на сервер нужна обёртка — команда в runbook.md, раздел 6а.
+
+## Схема `pulse` (база ropbot, контейнер ropbot-postgres-1, psql -U rop -d rop)
+
+- **`pulse.daily_kpi`** — 90 дней истории (с 28.05), все дни заполнены:
   расход/показы/клики Директа; визиты и цели Метрики (счётчик 56331115,
   autosender.ru; цели 63078325 «Подобрать автомобиль» и 326268791 «Звонок»);
   лиды/сделки/звонки из CRM.
-- **`pulse.daily_campaign`** — 684 строки, расход по дням по каждой кампании
-  Директа. Все кампании аккаунта ведут на autosender.ru, включая
-  «ТК Япония/Корея/Китай».
-- **`pulse.direct_snapshot`** — базовый снимок настроек кампаний для
-  автодетекта изменений.
-- **`pulse.events`** — журнал изменений: kind = system / auto_direct /
-  auto_crm / manual. Ручные события (цены, люди, акции) Тимофей пишет в чат,
-  Claude заносит их сюда.
-- **`pulse.assets`** — `build_page.py`, `aggregates.json` (gzip+base64, md5
-  сверены) и `runbook.md` — полная пошаговая инструкция ежедневного обновления.
+- **`pulse.daily_campaign`** — расход по дням по каждой кампании Директа.
+  Все кампании аккаунта ведут на autosender.ru, включая «ТК Япония/Корея/Китай».
+- **`pulse.direct_snapshot`** — снимок настроек кампаний для автодетекта изменений.
+- **`pulse.events`** — журнал изменений: kind = system / auto_direct / auto_crm /
+  manual. Ручные события (цены, люди, акции) Тимофей пишет в чат, Claude заносит.
+- **`pulse.assets`** — build_page.py, aggregates.json, runbook.md (полная
+  пошаговая инструкция ежедневного обновления, включая выкладку на 8443).
 
 ## Страница
 
@@ -55,21 +63,14 @@
 Scheduled task, cron `30 23 * * *` UTC (09:30 Владивосток),
 `requires_local_device=true` — инструменты идут через макбук, утром он должен
 быть включён. Промпт задачи: прочитать
-`SELECT content FROM pulse.assets WHERE name='runbook.md'` через ropbot sql
-и следовать инструкции; артефакт публиковать строго с url выше; затем обновить
-копию на rop.autosender.ru по README-deploy.md. Пропущенные дни не теряются:
-все источники хранят историю, задача дособирает задним числом.
+`SELECT content FROM pulse.assets WHERE name='runbook.md'` через ropbot sql и
+следовать инструкции (она включает и артефакт, и выкладку puls.html на 8443).
+Пропущенные дни не теряются: источники хранят историю, задача дособирает
+задним числом.
 
-## Осталось / открытые вопросы
+## Осталось
 
 - **Scheduled task не создана** — в исходном чате застряло разрешение
-  create_trigger («одобрено с правками», система не может применить). Нужно
-  отклонить старую карточку и создать задачу заново с параметрами выше.
-- **DNS**: ждёт действия Тимофея — сменить A-запись `rop.autosender.ru` →
-  92.63.100.125 (сейчас 89.125.146.134, заглушка Akamai). После смены запустить
-  `/opt/orchestrator/pulse_upload/enable_https.sh` (certbot + редирект на https).
-- **runbook.md** без раздела про rop.autosender.ru (запись блокировалась) —
-  компенсируется ссылкой на README-deploy.md в промпте задачи.
-- Инцидент 26.08 (danilchenov ~20 мин не отвечал) разобран — см. changelog:
-  воркер whisper раздул память, OOM, отвис сам; рекомендация mem_limit
-  на asr-контейнеры пока не применена.
+  create_trigger. Создать заново с параметрами выше.
+- Прибраться на 92.63.100.125: /var/www/pulse и /opt/orchestrator/pulse_upload
+  больше не нужны (низкий приоритет).
