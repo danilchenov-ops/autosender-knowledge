@@ -12,7 +12,7 @@
 | Данные | Postgres «ropbot» на danilchenov (5.35.99.93), схема `pulse` |
 | Сборщик страницы + runbook | `pulse.assets` (build_page.py, aggregates.json gzip+base64, runbook.md — plain text) |
 | Артефакт-дашборд | https://claude.ai/code/artifact/ee42a2ba-8240-457f-a761-e2ed9e7ee003 |
-| **Вкладка «Пульс» в панели РОПа** | https://rop.autosender.ru:8443/d/7f4d4e1805673d4605e42a052e13cd41/puls.html |
+| **Вкладка «Пульс» в панели РОПа** | https://rop.autosender.ru:8443/d/7f4d4e1805673d4605e42a052e13cd41/puls.html — под пин-кодом |
 | Файл страницы | `/opt/ropbot/web/d/7f4d4e1805673d4605e42a052e13cd41/puls.html` (рядом с kachestvo.html) |
 | Рабочий каталог сборки | `/root/pulse/` на сервере ропа (build_page.py, kpi.csv, aggregates.json, pulse.html, publish.sh) |
 
@@ -29,6 +29,13 @@ DNS не трогать. Файлы на 92.63.100.125 можно снести �
 pulse.html-фрагмента). build.sh пересобирает панели каждые 15 минут, но
 puls.html не трогает. Сбор «Пульса» описан на вкладке «Замеры» (список
 ZAMERY в dash.py) — при изменении состава сбора обновлять и его.
+
+С 26.08 puls.html закрыт пин-кодом (решение Тимофея): nginx на danilchenov
+(location = …/puls.html в /etc/nginx/sites-enabled/dash, бэкап
+/root/dash.nginx.bak-pin) пускает только с кукой puls_key, иначе 302 на
+pin.html — страницу ввода кода (кука на 90 дней, path каталога токена).
+Значение кода в реестре не храним — оно в nginx-конфиге. Остальные вкладки
+панели открыты как раньше; артефакт на claude.ai пин не закрывает.
 
 ## Схема `pulse` (база ropbot, контейнер ropbot-postgres-1, psql -U rop -d rop)
 
