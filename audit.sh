@@ -69,7 +69,7 @@ q() { $PSQL "$1" 2>/dev/null | tr -d ' '; }
   echo
   echo "### Скоринг — распределение классов, накоплено всего"
   echo '```'
-  $PSQL "select model_version||' '||coalesce(grade,'?')||': '||count(*) from lead_scores group by 1,2 order by 1" 2>/dev/null | head -12
+  $PSQL "select model_version||' '||coalesce(grade,'?')||': '||count(*) from lead_scores group by model_version, grade order by 1" 2>/dev/null | head -12
   echo '```'
   echo
   echo "## Сервер 195.2.74.207 — то, что смотрит наружу"
@@ -84,7 +84,7 @@ import sqlite3
 c=sqlite3.connect(\"/opt/lead-router/state.db\")
 print(\"назначений за сутки:\", c.execute(\"select count(*) from assignments where created_at > datetime(\x27now\x27,\x27-1 day\x27)\").fetchone()[0])
 print(\"назначений всего:\", c.execute(\"select count(*) from assignments\").fetchone()[0])
-for r in c.execute(\"select assigned_to, count(*) from assignments where created_at > datetime(\x27now\x27,\x27-7 day\x27) group by 1 order by 2 desc\"):
+for r in c.execute(\"select email, count(*) from assignments where created_at > datetime(\x27now\x27,\x27-7 day\x27) group by 1 order by 2 desc\"):
     print(\"  за неделю\", r[0], \"—\", r[1])
 " 2>/dev/null
     echo "--- сертификаты ---"
