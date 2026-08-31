@@ -2219,3 +2219,4 @@ visual_daily.py и visual_backfill.py считают ideal; прошлое пе�
 - Артефакт на claude.ai из рабочего чата не обновляется: сеть окружения
   блокирует *.frame.claudeusercontent.com — Тимофею предложено добавить домен
   в allowed domains окружения.
+=== 2026-08-31 КТ3: вердикты Я-5 (остановить) / Я-6 (оставить), срез теста нед-2 — projects/reklama.md
