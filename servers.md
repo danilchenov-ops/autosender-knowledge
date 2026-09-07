@@ -30,5 +30,10 @@ echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICJdAl2AiNbjhqL7l4JJ4yMGpDAiwp025/u8R
 
 ## Известные особенности
 
+- На ропбот-сервере **systemd-cron**: задания из `/etc/cron.d/*` и crontab
+  превращаются в юниты `cron-<файл>-root-N.timer`. `journalctl -u cron` пуст —
+  смотреть `systemctl list-timers | grep cron-` и `journalctl -u cron-<файл>-root-0`.
+  Новый файл в `/etc/cron.d` подхватывается сам, `daemon-reload` не нужен.
+
 - Часы контейнера Claude могут врать на сутки. **Дату всегда брать с сервера**
   командой `date`, а не из окружения.
