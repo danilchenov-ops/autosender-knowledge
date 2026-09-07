@@ -2801,3 +2801,5 @@ Telegram 4 806, звонки 397 против 8 109 заказов — сход�
    `idx_tg_sent_once` частичный (`WHERE ok`). Добавлено `WHERE ok`.
 Бэкапы `app/sms_watch.py.bak-fix0907`, `app/tg.py.bak-0907`. После правки
 сигнал по Пономарю ушёл трём руководителям (tg_sent kind=sms_stuck, ok).
+- **07.09.2026** — посевы Telega.in: KPI = цена подписчика (порог 300 ₽). Добавлены `telega_placements`,
+  `v_telega_econ`, `app/telega.py` (ссылки seed_<slug>_<date>, отчёт). Подробности — `projects/telega-posevy.md`.
