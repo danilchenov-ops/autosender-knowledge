@@ -2754,3 +2754,20 @@ Telegram 4 806, звонки 397 против 8 109 заказов — сход�
   609783020 «Подписка ТГ» (ценность 500 ₽, рядом с 598775226 `sub` = 500 ₽; прежняя запись про
   0,30 ₽ устарела — уже 500). Стратегия не менялась: «Максимум кликов», недельный бюджет
   5 000 / 10 000 ₽. Перевод на «Максимум конверсий» — только после ≥10–15 конверсий/нед (~21.09).
+
+## 2026-09-07 10:00 — точный учёт подписок MAX
+- Бот BOtmetr (`@id253001266870_bot`) создан Тимофеем, добавлен в канал `channel_autosender`
+  (chat_id −70996748460165, 2 209 участников на 06:55 UTC). Токен → `/opt/ropbot/.env` (`MAX_BOT_TOKEN`,
+  `MAX_CHAT_ID`, `MAX_HOOK_SECRET`). Russian Trusted Root CA поставлен на хост ропбота (TLS к platform-api2.max.ru).
+- Прокладка: `/opt/tglinks/app.py` — `/max/go` (клик → sqlite `max_clicks` → 302 на канал), `POST /max/hook`
+  (вебхук с секретом → `max_events`), `/max/health`; nginx `location /max/`; `pooltool.py maxexport`.
+  Кнопка MAX в `index.html` → `/max/go` с ClientID/yclid (`data-maxlink`). Вебхук подписан на
+  user_added/user_removed/bot_added/bot_removed/bot_started/chat_title_changed — `bot_added` пришёл, `is_channel: true`.
+- Ропбот: миграция `026_max_channel.sql` (`max_clicks`, `max_channel_members`, `max_channel_counts`,
+  `v_max_subs_daily`, `v_max_subscriber_journey`, `v_subs_daily`), `app/max_pool.py` (import/count/status,
+  привязка вступления к клику по окну −15 мин…+1 мин: exact/campaign/ambiguous/organic),
+  шаг 4 в `bin/tg_pool.sh`. Образ tgbot пересобран (`docker compose build tgbot && up -d tgbot`, TG-бот перезапущен ~5 с).
+- Метрика: цель **609807401 «Подписка MAX»** (`max_subscribed`, action/exact) создана через API.
+  `tg_offline.py` обобщён: грузит TG (`tg_subscribed`) и MAX (`max_subscribed`, только `exact`).
+- Первый реальный клик по кнопке MAX с ClientID и yclid уже записан (кампания hot, 09:57 MSK).
+- Контроль 08.09: `user_added` приходит без админ-прав? Если нет — назначить бота админом канала.

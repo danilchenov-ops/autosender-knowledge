@@ -121,9 +121,50 @@ FROM tg_channel_members;
 
 ## MAX
 
+### Точный учёт подписок MAX (с 07.09.2026)
+
+Бот **BOtmetr** `@id253001266870_bot` (токен `/opt/ropbot/.env` → `MAX_BOT_TOKEN`, канал
+`MAX_CHAT_ID=-70996748460165` «Автосендер Автомобили из Японии Китая и Кореи», публичный,
+`https://max.ru/channel_autosender`). Добавлен в канал 07.09 подписчиком (не админом).
+API: `platform-api2.max.ru`, сертификат Минцифры — Russian Trusted Root CA поставлен на хост ропбота
+(`/usr/local/share/ca-certificates/russian_trusted_root_ca.crt`).
+
+**Отличие от TG:** в MAX у канала одна ссылка, персональных нет. Вступление привязывается к клику
+на прокладке **по окну времени** (клик за ≤15 мин до вступления, ≤1 мин после). Качество привязки
+`match_quality`: `exact` — один клик в окне (ClientID → Метрика); `campaign` — несколько кликов,
+все из одной кампании (кампания известна, в Метрику не грузим); `ambiguous` — несколько из разных;
+`organic` — кликов не было.
+
+Цепочка:
+1. Кнопка MAX на прокладке (`a[data-maxlink]`) → `GET /max/go?c=&yclid=&cid=<ClientID>` → пишет
+   клик в sqlite `max_clicks` → 302 на канал. Без JS — прямой href канала.
+2. Вебхук Bot API MAX → `POST https://mes.autosender.ru/max/hook` (секрет `/opt/tglinks/max_secret`,
+   заголовок `X-Max-Bot-Api-Secret`; в ропботе `MAX_HOOK_SECRET`) → sqlite `max_events`. Подписка
+   на `user_added, user_removed, bot_added, bot_removed, bot_started, chat_title_changed`.
+   Состояние: `https://mes.autosender.ru/max/health`.
+3. `bin/tg_pool.sh` (cron `*/5`, шаг 4): `pooltool.py maxexport` → `app/max_pool.py import`
+   (таблицы `max_clicks`, `max_channel_members`, привязка) + `participants_count` →
+   `max_channel_counts` (контрольная сумма, как `getChatMemberCount`).
+4. `app/tg_offline.py` грузит `exact`-вступления в цель **609807401 «Подписка MAX»**
+   (`max_subscribed`, создана через API 07.09) офлайн-конверсией по ClientID / yclid.
+5. Вью: `v_max_subs_daily`, `v_max_subscriber_journey`, общая `v_subs_daily` (tg + max).
+
+Миграция `026_max_channel.sql`. Бэкапы: `app.py.bak-before-max`, `pooltool.py.bak-before-max`,
+`index.html.bak-before-maxgo`, `nginx.conf.bak-before-max`, `tg_offline.py.bak-before-max`,
+`tg_pool.sh.bak-before-max`.
+
+```sql
+SELECT day_msk, source, joins, leaves, net FROM v_max_subs_daily WHERE day_msk >= current_date-7 ORDER BY 1,2;
+SELECT match_quality, count(*), round(avg(match_delay_s)) avg_delay_s FROM max_channel_members WHERE action='join' GROUP BY 1;
+```
+
+**Открыто:** приходит ли `user_added` без прав администратора у бота — проверить по первому
+органическому вступлению (≈20/сут). Если за 2 часа событий нет — назначить бота админом.
+Окно 15 мин — гипотеза; подобрать по распределению `match_delay_s` через неделю.
+
+
 - Канал `https://max.ru/channel_autosender`
-- Аналитики по ссылкам нет, Bot API не проверен. Мерить целью `sub_max` (клики) и ручным
-  замером канала.
+- ~~Аналитики по ссылкам нет, Bot API не проверен~~ — с 07.09 учёт ведёт бот BOtmetr (см. выше); `sub_max` = клики.
 - **Посевы в группах идут постоянно (Тимофей, 31.08.2026)** — прирост канала MAX
   с рекламой сверить нельзя без цифры прироста от посева за тот же период.
   Формула: `подписки с рекламы ≈ прирост канала − прирост от посева + отписки`.
