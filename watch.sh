@@ -72,7 +72,10 @@ LASTBK=$(find /opt/ropbot/backups -type f -printf '%T@ %p\n' 2>/dev/null | sort 
 if [ -z "$LASTBK" ]; then bad backup "бэкапов базы нет вообще"
 else
   BKAGE=$(( ( $(date +%s) - $(stat -c %Y "$LASTBK") ) / 3600 ))
-  if [ "$BKAGE" -gt 30 ]; then bad backup "последний бэкап базы $BKAGE часов назад"; else ok backup ""; fi
+  BKSIZE=$(stat -c %s "$LASTBK")
+  if [ "$BKAGE" -gt 30 ]; then bad backup "последний бэкап базы $BKAGE часов назад"
+  elif [ "$BKSIZE" -lt 50000000 ]; then bad backup "последний бэкап базы подозрительно мал: $((BKSIZE/1024)) КБ (норма >100 МБ)"
+  else ok backup ""; fi
 fi
 
 # ── 8. Второй сервер: lead-router ────────────────────────────────────────────
