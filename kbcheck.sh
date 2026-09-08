@@ -29,7 +29,7 @@ done
 
 # 2. services.md против фактического крона
 n ""; n "<b>services.md ↔ крон</b>"
-FACT=$(grep -oE '[a-z_]+\.(py|sh|sql)' audit/latest.md | sort -u)
+FACT=$(grep -oE '[a-z_]+\.(py|sh|sql)' audit/latest.md | grep -v '^_' | sort -u)
 MISS=""
 for j in $FACT; do grep -q "$j" services.md || MISS="$MISS $j"; done
 [ -n "$MISS" ] && n "🟡 в кроне есть, в services.md нет:$MISS" || n "🟢 совпадает"
