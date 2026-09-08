@@ -5,7 +5,9 @@
 ```
 Перед работой прочитай реестр через ropbot ssh_run:
 cat /opt/knowledge/INDEX.md
-cat /opt/knowledge/projects/<файл>.md
+cat /opt/knowledge/projects/README.md
+По теме задачи и ключевым словам из README выбери project-файл (один или два) и прочитай
+cat /opt/knowledge/projects/<выбранный>.md. Одной строкой скажи, какой файл выбрал.
 Сначала блок «## СОСТОЯНИЕ НА <дата>» — это актуальная картина; всё ниже — история.
 Если блока нет или ему больше 14 дней — первым делом напиши его: 30–50 строк,
 что есть сейчас, какие решения действуют, ближайшие контрольные точки. Переписывай его
@@ -13,21 +15,7 @@ cat /opt/knowledge/projects/<файл>.md
 После любых изменений (сервер, настройки, решения, выводы) — допиши в
 /opt/knowledge/changelog.md с датой и сделай git commit в /opt/knowledge.
 Закрытые вопросы в open-questions.md не удаляй — дописывай под ними «→ ЗАКРЫТО дата: чем».
+Ни один файл не подходит — новый проект по правилу 11 из rules.md.
 ```
 
-| Направление | Файл |
-|---|---|
-| Яндекс Директ и Метрика | `reklama` |
-| Страница подписки и подписные РСЯ-кампании | `prokladka-podpiska` |
-| Посевы Telegram | `telega-posevy` |
-| Аналитика Битрикс24, lead-router | `bitrix-analitika` |
-| Виртуальный РОП, скоринг заявок, бот | `virtualnyy-rop` |
-| Составная оценка заявки | `sostavnaya-ocenka` |
-| Звонки, транскрибация | `zvonki-transkribaciya` |
-| QA-оценка разговоров | `qa-ocenka-razgovorov` |
-| Эталонный скрипт | `etalonnyy-skript` |
-| Идеальная сделка | `idealnaya-sdelka` |
-| Портрет менеджера | `portret-menedzhera` |
-| Слепок менеджеров | `slepok-menedzherov` |
-| Панели менеджеров | `paneli-menedzherov` |
-| Пульс Синергосмото | `puls-sinergosmoto` |
+Таблица файлов и ключевых слов — `projects/README.md`.
