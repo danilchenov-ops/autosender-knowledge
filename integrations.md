@@ -195,11 +195,14 @@ SELECT match_quality, count(*), round(avg(match_delay_s)) avg_delay_s FROM max_c
 
 ## GitHub (с 13.09.2026)
 
-- Репозитории (приватные, аккаунт `danilchenov-ops`): `autosender-knowledge` ← `/opt/knowledge`,
-  `autosender-ropbot` ← `/opt/ropbot`.
-- Ключи доступа с ропбот-сервера, ОДИН НА РЕПОЗИТОРИЙ (GitHub не даёт использовать deploy key дважды):
-  `~/.ssh/github` → knowledge (хост `github.com`), `~/.ssh/github-ropbot` → ropbot (алиас `github-ropbot`).
-  Публичные части (
-  добавляется в GitHub как deploy key с правом записи). Конфиг — `~/.ssh/config`, хост `github.com`.
-- Отзыв доступа: удалить ключ `ropbot-server-deploy` в настройках репозитория на GitHub.
-- Сайт autosender.ru в этот контур НЕ входит: GitLab `Sisyphus-forever/autosender-2025`.
+- Аккаунт: `danilchenov-ops`. Репозитории приватные, ветка `main`.
+  - `autosender-knowledge` ← `/opt/knowledge` (реестр)
+  - `autosender-ropbot` ← `/opt/ropbot` (код Виртуального РОПа)
+- Ключи доступа с ропбот-сервера. **Один ключ на репозиторий** — GitHub не даёт
+  использовать один deploy key дважды:
+  - `~/.ssh/github` → knowledge, обычный хост `github.com`
+  - `~/.ssh/github-ropbot` → ropbot, алиас `github-ropbot` в `~/.ssh/config`
+  Оба добавлены как deploy key с правом записи.
+- Отзыв доступа: удалить соответствующий ключ в Settings → Deploy keys нужного репозитория.
+- Сайт autosender.ru в этот контур НЕ входит: GitLab `Sisyphus-forever/autosender-2025`,
+  своя база знаний `/opt/claude-kb` на 83.136.235.210.
