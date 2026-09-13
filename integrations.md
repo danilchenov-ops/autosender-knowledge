@@ -195,9 +195,11 @@ SELECT match_quality, count(*), round(avg(match_delay_s)) avg_delay_s FROM max_c
 
 ## GitHub (с 13.09.2026)
 
-- Репозитории (приватные): `autosender-knowledge` ← `/opt/knowledge`,
-  `autosender-ropbot` ← `/opt/ropbot`. Аккаунт — уточняется у Тимофея.
-- Ключ доступа с ропбот-сервера: `~/.ssh/github` (приватный), `~/.ssh/github.pub` (публичный,
+- Репозитории (приватные, аккаунт `danilchenov-ops`): `autosender-knowledge` ← `/opt/knowledge`,
+  `autosender-ropbot` ← `/opt/ropbot`.
+- Ключи доступа с ропбот-сервера, ОДИН НА РЕПОЗИТОРИЙ (GitHub не даёт использовать deploy key дважды):
+  `~/.ssh/github` → knowledge (хост `github.com`), `~/.ssh/github-ropbot` → ropbot (алиас `github-ropbot`).
+  Публичные части (
   добавляется в GitHub как deploy key с правом записи). Конфиг — `~/.ssh/config`, хост `github.com`.
 - Отзыв доступа: удалить ключ `ropbot-server-deploy` в настройках репозитория на GitHub.
 - Сайт autosender.ru в этот контур НЕ входит: GitLab `Sisyphus-forever/autosender-2025`.
