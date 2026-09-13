@@ -192,3 +192,12 @@ SELECT match_quality, count(*), round(avg(match_delay_s)) avg_delay_s FROM max_c
 
 Вывод на 07.09: цена подписчика по факту прироста ≈370 ₽ против 111–146 ₽ по целям;
 масштабирование подписных кампаний отозвано (`decisions.md`).
+
+## GitHub (с 13.09.2026)
+
+- Репозитории (приватные): `autosender-knowledge` ← `/opt/knowledge`,
+  `autosender-ropbot` ← `/opt/ropbot`. Аккаунт — уточняется у Тимофея.
+- Ключ доступа с ропбот-сервера: `~/.ssh/github` (приватный), `~/.ssh/github.pub` (публичный,
+  добавляется в GitHub как deploy key с правом записи). Конфиг — `~/.ssh/config`, хост `github.com`.
+- Отзыв доступа: удалить ключ `ropbot-server-deploy` в настройках репозитория на GitHub.
+- Сайт autosender.ru в этот контур НЕ входит: GitLab `Sisyphus-forever/autosender-2025`.
