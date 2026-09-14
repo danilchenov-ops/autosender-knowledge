@@ -52,6 +52,22 @@
 - Зачем: история показов/кликов/позиций по запросам, индексирование, диагностика —
   разбор «тряски» сайта в поиске.
 
+## Google Search Console
+
+- Доступ с 14.09.2026. Ресурс **доменный**: `sc-domain:autosender.ru`, уровень `siteFullUser`.
+- Сервисный аккаунт `gsc-reader@autosender-1713165947569.iam.gserviceaccount.com`
+  в проекте Google Cloud «Autosender» (`autosender-1713165947569`), там же включён
+  Google Search Console API. Права выданы в самом Search Console («Пользователи и
+  разрешения»), ролей Google Cloud у аккаунта нет.
+- Ключ — `/opt/ropbot/gsc-sa.json` (600, в `.gitignore`). Ключ проходил через чат
+  при заведении — **перевыпустить** при случае.
+- Инструмент: `/opt/ropbot/tools/gsc.py` (свой venv `/opt/ropbot/venv-gsc`).
+  `gsc.py sites` — ресурсы; `gsc.py query --dim query,page --days 28 --limit 200`.
+  Разрезы: query, page, country, device, date, searchAppearance. Потолок 25 000 строк.
+- **Истории нет:** данные копятся с 11.09.2026, задним числом Google их не отдаёт.
+  Ретроспектива до этой даты невозможна — сравнения только вперёд.
+- Лаг данных 2-3 дня, поэтому период по умолчанию в скрипте сдвинут на 3 дня назад.
+
 ## Битрикс24
 
 - Вебхук в `/opt/ropbot/.env`, переменная `B24_WEBHOOK`
