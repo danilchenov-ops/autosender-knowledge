@@ -2043,3 +2043,6 @@ merge PR #6 (Тимофей) → PROMPT_LOG + docker compose up -d --build. /hea
 
 ## 22.09.2026 — VM: деплой feat/tg-test (main ef37fc4) + ветка feat/msg-mix
 Бот @andreyAS26_bot в основном контейнере, vm-try удалён. feat/msg-mix: ритм 1/2 сообщения вперемешку. Решение по циклу: правки по разбору 15–20 диалогов, версии сравнивать по шагам воронки на 100–150 диалогах, конверсию до паспорта — раз в месяц.
+
+## 22.09.2026 — VM: деплой feat/msg-mix (main 6f29493)
+merge PR #8 (Тимофей) → PROMPT_LOG + docker compose up -d --build. Бот и чат на 6f29493, страница алгоритма 200.
