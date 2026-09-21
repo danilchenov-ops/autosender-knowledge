@@ -1892,3 +1892,6 @@ Wazzup для MAX, схема vm в базе rop, симулятор клиен�
 вопросы 56–61, решения Тимофея в decisions.md. Репозиторий кода — отдельный autosender-vm, каталог /opt/vm
 (скелет — следующим шагом). **Проверить:** 28.09 — получен номер Wazzup и учётка Андрея, промт v0 и
 симулятор готовы; 12.10 — пилот входа А с лимитом 10/день.
+
+## 21.09.2026 — autosender-vm: скелет репозитория в /opt/vm
+**Сделали:** /opt/vm (git, ветки main и dev, коммит 44a62d2): AGENTS.md (= CLAUDE.md), README, .env.example (имена переменных Wazzup/Битрикс/lead-router/ProxyAPI/сайт), .gitignore, каталоги app/ prompts/ knowledge/ sim/ sql/ docs/ с README, docs/architecture.md = копия projects/virtualnyy-menedzher.md. Deploy key `~/.ssh/github-vm` (алиас `github-vm` в ~/.ssh/config), remote `git@github-vm:danilchenov-ops/autosender-vm.git`. **Не сделано:** репозиторий на GitHub не создан — ждёт Тимофея (создать приватный `autosender-vm`, добавить deploy key с правом записи), после этого `git push -u origin main dev`. **Проверить:** после push — `git -C /opt/vm status -sb` показывает origin.
