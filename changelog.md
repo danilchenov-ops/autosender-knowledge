@@ -2037,3 +2037,6 @@ merge PR #5 (Тимофей) → docker compose up -d --build; /health 4aa0eff, 
 
 ## 22.09.2026 — VM: деплой feat/sales-algo (main b4d7355)
 merge PR #6 (Тимофей) → PROMPT_LOG + docker compose up -d --build. /health b4d7355; страница алгоритма /vm/<секрет>/algo через релей 200, история коммитов на месте.
+
+## 22.09.2026 — VM: Telegram-бот @andreyAS26_bot (ветка feat/tg-test)
+Токен от Тимофея в /opt/vm/.env, getMe ок. До merge бот крутится в пробном контейнере vm-try (порт 8089, образ из ветки), отвечает только TG_ALLOWED=460128042. После merge — в основном контейнере, vm-try удалить.
