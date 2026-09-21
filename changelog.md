@@ -2018,3 +2018,6 @@ merge PR #3 (Тимофей) → docker compose up -d --build. /health version=f
 
 ## 22.09.2026 — VM: ветка feat/cost-natural (удешевление Sonnet + естественность)
 Кеш Anthropic 1 ч (проверено через ProxyAPI: запись/чтение работают) + keepalive раз в 55 мин (~0,9 ₽, только если чатом пользовались за сутки); короткая схема ответа; assortment_hint; паузы набора; замена тире/ёлочек; лимит 3 сообщения; already_asked. Sonnet: тёплая реплика 2,0–2,5 ₽, запись кеша 18 ₽ раз в час при простое. Дальше: кеш истории и сжатие промта 14→7 тыс.
+
+## 22.09.2026 — VM: деплой feat/cost-natural (main 5714856)
+merge PR #4 (Тимофей) → docker compose up -d --build; /health 5714856, релей 200. Keepalive кеша Sonnet включён (только при активности за сутки), лог data/testchat/keepalive.jsonl.
