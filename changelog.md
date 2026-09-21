@@ -2021,3 +2021,7 @@ merge PR #3 (Тимофей) → docker compose up -d --build. /health version=f
 
 ## 22.09.2026 — VM: деплой feat/cost-natural (main 5714856)
 merge PR #4 (Тимофей) → docker compose up -d --build; /health 5714856, релей 200. Keepalive кеша Sonnet включён (только при активности за сутки), лог data/testchat/keepalive.jsonl.
+
+## 22.09.2026 — VM: свой ключ ProxyAPI + ветка feat/prompt-compact
+- По просьбе Тимофея в /opt/vm/.env другой ключ ProxyAPI (отдельный от ropbot, проверен: 200), контейнер пересоздан. Расход Андрея теперь отдельно от РОПа.
+- feat/prompt-compact: промт 14 → ~6 тыс. токенов, история в кеше. Sonnet: первая реплика 7,7 ₽ (было 18,2), тёплые 1,7–2,0 ₽, диалог 6 реплик 16,6 ₽ (было 29,4). Ждёт merge.
