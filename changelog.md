@@ -2025,3 +2025,6 @@ merge PR #4 (Тимофей) → docker compose up -d --build; /health 5714856, 
 ## 22.09.2026 — VM: свой ключ ProxyAPI + ветка feat/prompt-compact
 - По просьбе Тимофея в /opt/vm/.env другой ключ ProxyAPI (отдельный от ropbot, проверен: 200), контейнер пересоздан. Расход Андрея теперь отдельно от РОПа.
 - feat/prompt-compact: промт 14 → ~6 тыс. токенов, история в кеше. Sonnet: первая реплика 7,7 ₽ (было 18,2), тёплые 1,7–2,0 ₽, диалог 6 реплик 16,6 ₽ (было 29,4). Ждёт merge.
+
+## 22.09.2026 — VM: деплой feat/prompt-compact (main 4aa0eff)
+merge PR #5 (Тимофей) → docker compose up -d --build; /health 4aa0eff, в образе facts.md/sales.md, релей 200.
