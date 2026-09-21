@@ -63,7 +63,7 @@ _Актуальный список берётся из `audit/latest.md` (сни
 40 3 1 * * cd /opt/ropbot && cat lab/prices_models.py | docker exec -i ropbot-collector-1 python - --json > /root/out/actual_prices_models.json 2>>/var/log/ropbot/prices_models.log && cat lab/prices_models.py | docker exec -i ropbot-collector-1 python - --md > /root/out/actual_prices_models.md 2>>/var/log/ropbot/prices_models.log
 0 3 * * 1-5 docker exec -i ropbot-collector-1 python - < /opt/ropbot/app/bestworst.py >> /var/log/ropbot/bestworst.log 2>&1
 * * * * * flock -n /tmp/dash.lock /opt/ropbot/web/build_now.sh >> /var/log/ropbot/dash.log 2>&1
-*/15 * * * * flock -n /tmp/dash.lock /opt/ropbot/web/build.sh >> /var/log/ropbot/dash.log 2>&1
+*/15 * * * * flock -w 55 /tmp/dash.lock /opt/ropbot/web/build.sh >> /var/log/ropbot/dash.log 2>&1
 13,43 * * * * docker exec -i ropbot-collector-1 python - --days 3 < /opt/ropbot/app/stagehist_fix.py >> /var/log/ropbot/stagehist_fix.log 2>&1
 15 23 * * * docker exec -i ropbot-collector-1 python - < /opt/ropbot/app/snapshot.py >> /var/log/ropbot/snapshot.log 2>&1
 10 2 * * 1 docker exec -i ropbot-collector-1 python - < /opt/ropbot/app/qa_advice.py >> /var/log/ropbot/qa_advice.log 2>&1
