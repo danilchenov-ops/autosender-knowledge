@@ -2034,3 +2034,6 @@ merge PR #5 (Тимофей) → docker compose up -d --build; /health 4aa0eff, 
 
 ## 22.09.2026 — VM: страница алгоритма на rop.autosender.ru (ветка feat/sales-algo)
 По просьбе Тимофея алгоритм вынесен на /vm/<секрет>/algo (только по секретной ссылке, как тест-чат). Источник docs/algorithm.html; история изменений промта собирается при деплое. Правило: правка промта → правка страницы в том же коммите (AGENTS.md). Ждёт merge PR feat/sales-algo.
+
+## 22.09.2026 — VM: деплой feat/sales-algo (main b4d7355)
+merge PR #6 (Тимофей) → PROMPT_LOG + docker compose up -d --build. /health b4d7355; страница алгоритма /vm/<секрет>/algo через релей 200, история коммитов на месте.
