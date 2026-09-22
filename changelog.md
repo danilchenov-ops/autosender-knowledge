@@ -2104,3 +2104,6 @@ CPL, A+B), Я-3 неделя; 06.10 — Я-2. Жернов/стадия 10 — �
 
 ## 22.09.2026 — VM: деплой feat/selection-links (main a398e72)
 merge PR #9 → PROMPT_LOG + docker compose up -d --build. В контейнере site.db смонтирована, selection_link работает; бот и чат на a398e72; страница алгоритма 200. Проверить 23.09: sync.log после 05:40.
+
+## 22.09.2026 — VM: Telegram-бот открыт всем (ветка feat/tg-open)
+Решение Тимофея «всем». В /opt/vm/.env: TG_ALLOWED= (пусто), TG_ADMINS=460128042, TG_USER_DAILY=30, LLM_DAILY_LIMIT_RUB=1000. ВНИМАНИЕ: до merge не перезапускать vm-testchat-1 — старый код при пустом TG_ALLOWED пустит всех без лимитов. Лимиты проверены в образе ветки.
