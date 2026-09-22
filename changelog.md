@@ -2107,3 +2107,6 @@ merge PR #9 → PROMPT_LOG + docker compose up -d --build. В контейнер
 
 ## 22.09.2026 — VM: Telegram-бот открыт всем (ветка feat/tg-open)
 Решение Тимофея «всем». В /opt/vm/.env: TG_ALLOWED= (пусто), TG_ADMINS=460128042, TG_USER_DAILY=30, LLM_DAILY_LIMIT_RUB=1000. ВНИМАНИЕ: до merge не перезапускать vm-testchat-1 — старый код при пустом TG_ALLOWED пустит всех без лимитов. Лимиты проверены в образе ветки.
+
+## 22.09.2026 — VM: деплой feat/tg-open (main ea5a417)
+merge PR #10 → docker compose up -d --build. Бот открыт всем с лимитами (30 ответов/чел/сутки, 1000 ₽/сутки), уведомления Тимофею о новых собеседниках.
