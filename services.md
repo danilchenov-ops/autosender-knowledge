@@ -34,6 +34,7 @@ _Актуальный список берётся из `audit/latest.md` (сни
 | `0 3 пн–пт` | bestworst.py | лучший/худший разговор → Светлане |
 | `10 2 пн` | qa_advice.py | QA-план на неделю |
 | `55 13` | web/visual_daily.py | точки для панелей |
+| `25 *` | web/trafik.sh (flock) | Метрика по дням → metrika_daily, вкладка «Трафик» |
 | `* * ` / `*/15` | web/build_now.sh / build.sh (flock) | пересборка панелей менеджеров |
 | `*/15` | balance_watch.py | баланс ProxyAPI |
 | `*` / `*/15` | smsd.py / sms_watch.py (если есть `/opt/ropbot/sms_on`) | рассылка СМС и сторож телефонов |
@@ -71,6 +72,7 @@ _Актуальный список берётся из `audit/latest.md` (сни
 */30 * * * * /opt/knowledge/watch.sh >> /var/log/kbwatch.log 2>&1
 * * * * * [ -f /opt/ropbot/sms_on ] && flock -n /tmp/smsd.lock docker exec -i ropbot-collector-1 python - < /opt/ropbot/app/smsd.py >> /var/log/ropbot/smsd.log 2>&1
 55 13 * * * docker exec -i ropbot-collector-1 python - < /opt/ropbot/web/visual_daily.py >> /var/log/ropbot/visual.log 2>&1
+25 * * * * flock -n /tmp/trafik.lock /opt/ropbot/web/trafik.sh >> /var/log/ropbot/trafik.log 2>&1
 */15 * * * * [ -f /opt/ropbot/sms_on ] && flock -n /tmp/sms_watch.lock docker exec -i ropbot-collector-1 python - < /opt/ropbot/app/sms_watch.py >> /var/log/ropbot/sms_watch.log 2>&1
 */10 * * * * docker exec -i ropbot-tgbot-1 python - < /opt/ropbot/app/sale_watch.py >> /var/log/ropbot/sale_watch.log 2>&1
 */5 * * * * flock -n /run/lock/tg_pool.lock /opt/ropbot/bin/tg_pool.sh >> /var/log/ropbot/tg_pool.log 2>&1
